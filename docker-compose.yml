@@ -1,0 +1,10 @@
+version: '3.6'
+services:
+  romemu:
+    build: .
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - ${AUTH_PORT:-443}:${AUTH_PORT:-443}
+      - ${WORLD_PORT:-5555}:${WORLD_PORT:-5555}
+    command: ["npm", "run", "watch"]
