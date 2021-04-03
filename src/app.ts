@@ -1,3 +1,1 @@
-// Test
-
-console.log('Test 8');
+console.log('Implémentation de l\'appli');

@@ -2,10 +2,11 @@
   "name": "romemu",
   "version": "0.0.1",
   "description": "Emulateur open source pour Dofus 2.39",
-  "main": "app.js",
+  "main": "dist/app.js",
   "scripts": {
-    "watch": "concurrently \"tsc -w\" \"nodemon dist/app.js\"",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "watch": "./node_modules/.bin/concurrently \"./node_modules/.bin/tsc -w\" \"./node_modules/.bin/nodemon dist/app.js\"",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "./node_modules/.bin/tsc"
   },
   "repository": {
     "type": "git",
