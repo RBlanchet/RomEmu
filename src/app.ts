@@ -7,21 +7,25 @@ import AccountRepository from "./repository/account.repository";
 import {getCustomRepository} from "typeorm";
 import {Role} from "./enum/role";
 import Logger from "./cli/logger";
+import Auth from "./server/auth";
 
 @injectable()
 class App {
   private databaseProvider: DatabaseProvider;
   private configProvider: ConfigProvider;
   private logger: Logger;
+  private auth: Auth;
 
   constructor(
     databaseProvider: DatabaseProvider,
     configProvider: ConfigProvider,
-    logger: Logger
+    logger: Logger,
+    auth: Auth
   ) {
     this.databaseProvider = databaseProvider;
     this.configProvider = configProvider;
     this.logger = logger;
+    this.auth = auth;
 
     this.init();
   }
@@ -30,18 +34,7 @@ class App {
     this.logger.promptHeader();
 
     await this.databaseProvider.getConnection();
-
-    // Exemple d'utilisation d'un repository
-    const accountRepository = getCustomRepository(AccountRepository);
-    const account = accountRepository.create({
-      username: 'Test',
-      password: 'Test',
-      nickname: 'CompteTest',
-      locked: false,
-      scope: Role.CREATOR,
-      secretQuestion: 'Supprimer ?'
-    });
-    await accountRepository.insert(account);
+    await this.auth.init();
   }
 }
 
