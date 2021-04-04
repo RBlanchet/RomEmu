@@ -1,6 +1,7 @@
 {
   "name": "romemu",
-  "version": "0.0.1",
+  "version": "0.0.2",
+  "displayName": "RomEmu",
   "description": "Emulateur open source pour Dofus 2.39",
   "main": "dist/app.js",
   "scripts": {
@@ -27,9 +28,12 @@
     "typescript": "^4.2.3"
   },
   "dependencies": {
+    "@types/figlet": "^1.5.0",
     "@types/mongodb": "^3.6.11",
+    "chalk": "^4.1.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "figlet": "^1.5.0",
     "inversify": "^5.0.5",
     "mongodb": "^3.6.5",
     "reflect-metadata": "^0.1.13",
