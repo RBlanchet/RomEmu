@@ -6,23 +6,29 @@ import DatabaseProvider from "./provider/database.provider";
 import AccountRepository from "./repository/account.repository";
 import {getCustomRepository} from "typeorm";
 import {Role} from "./enum/role";
+import Logger from "./cli/logger";
 
 @injectable()
 class App {
   private databaseProvider: DatabaseProvider;
   private configProvider: ConfigProvider;
+  private logger: Logger;
 
   constructor(
     databaseProvider: DatabaseProvider,
     configProvider: ConfigProvider,
+    logger: Logger
   ) {
     this.databaseProvider = databaseProvider;
     this.configProvider = configProvider;
+    this.logger = logger;
 
     this.init();
   }
 
   public async init(): Promise<void> {
+    this.logger.promptHeader();
+
     await this.databaseProvider.getConnection();
 
     // Exemple d'utilisation d'un repository
