@@ -22,9 +22,13 @@ export default class DatabaseProvider {
     if (!this.instance) {
       try {
         this.instance = await createConnection({
+          // @ts-ignore
           type: this.configProvider.config.DATABASE_TYPE,
+          // @ts-ignore
           host: this.configProvider.config.DATABASE_HOST,
+          // @ts-ignore
           port: this.configProvider.config.DATABASE_PORT,
+          // @ts-ignore
           database: this.configProvider.config.DATABASE_NAME,
           entities: [__dirname + '/../**/*.js'],
           useNewUrlParser: true,

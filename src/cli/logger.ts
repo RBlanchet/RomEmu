@@ -13,10 +13,15 @@ export default class Logger {
 
   public promptHeader()
   {
+    // @ts-ignore
     const version = this.configProvider.config.npm_package_version;
+    // @ts-ignore
     const author = this.configProvider.config.npm_package_author_name;
+    // @ts-ignore
     const authorURL = this.configProvider.config.npm_package_author_url;
+    // @ts-ignore
     const description = this.configProvider.config.npm_package_description;
+    // @ts-ignore
     const appName = this.configProvider.config.APP_NAME;
 
     console.log(chalk.yellow(figlet.textSync(`${appName} release ${version}`, {
