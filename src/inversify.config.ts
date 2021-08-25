@@ -7,6 +7,7 @@ import WebServer from "./server/web";
 import StatusService from "./service/server/StatusService";
 import InstanceController from "./controller/api/InstanceController";
 import AuthController from "./controller/AuthController";
+import AccountRepository from "./repository/account.repository";
 
 const container = new Container();
 
@@ -17,6 +18,9 @@ container.bind<DatabaseProvider>(DatabaseProvider).to(DatabaseProvider);
 
 // Service
 container.bind<StatusService>(StatusService).to(StatusService);
+
+// Repository
+container.bind<AccountRepository>(AccountRepository).to(AccountRepository);
 
 // Controllers
 container.bind<InstanceController>(InstanceController).to(InstanceController);

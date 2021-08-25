@@ -1,0 +1,10 @@
+[{
+  "_id": "5831b5e503b10fc48c1568d8",
+  "uid": 1,
+  "username": "Admin",
+  "password": "admin",
+  "role": 4,
+  "locked": 0,
+  "nickname": "ADMINISTRATEUR",
+  "secret_question": "Supprimer le personnage ?"
+}]

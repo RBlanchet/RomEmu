@@ -17,8 +17,8 @@ export default class Client {
     this.receive();
     this.uid = uuidv4();
 
-    PacketMessenger.send(new Messages.ProtocolRequiredMessage(1738, 1738), this);
-    PacketMessenger.send(new Messages.HelloConnectMessage("ivu9wh58^kQQw*8n:jud11Kw(bHY9m3V", 303), this);
+    this.send(new Messages.ProtocolRequiredMessage(1738, 1738));
+    this.send(new Messages.HelloConnectMessage("ivu9wh58^kQQw*8n:jud11Kw(bHY9m3V", 303));
   }
 
   private receive(): void {
@@ -30,6 +30,10 @@ export default class Client {
     this.socket.on('end', (data) => {
       WebServer.emit('auth', {type: 'network', message: 'Une instance s\'est déconnecté'});
     })
+  }
+
+  public send(message: Messages): void {
+    PacketMessenger.send(message, this);
   }
 
   public getSocket(): net.Socket

@@ -1,7 +1,7 @@
 import {Entity, ObjectIdColumn, ObjectID, Column, Generated, PrimaryColumn} from "typeorm";
 import {Role} from '../enum/role';
 
-@Entity({name: 'accounts'})
+@Entity({name: 'account'})
 export class Account {
   @ObjectIdColumn()
   _id!: ObjectID;
@@ -23,7 +23,7 @@ export class Account {
     enum: Role,
     default: Role.PLAYER
   })
-  scope: Role;
+  role: Role;
 
   @Column()
   locked: boolean;
