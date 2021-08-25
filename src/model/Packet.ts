@@ -95,4 +95,8 @@ export default class Packet {
   public getMessage() {
     return this.message;
   }
+
+  public getClient(): Client {
+    return this.client;
+  }
 }

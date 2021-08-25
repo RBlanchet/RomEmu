@@ -3,21 +3,22 @@ import ByteArray from "../network/ankamagames/dofus/ByteArray";
 import arrayBufferToBuffer from "arraybuffer-to-buffer";
 import Client from "../model/Client";
 import WebServer from "../server/web";
+import * as Messages from "../network/ankamagames/dofus/Messages";
 
 export default class PacketMessenger {
   private static BIT_RIGHT_SHIFT_LEN_PACKET_ID = 2;
 
-  public static send(packet, client: Client) {
+  public static send(message: Messages, client: Client) {
     try {
-      packet.serialize();
+      message.serialize();
       const messageBuffer = new IO.CustomDataWrapper(new ByteArray());
-      let offset = PacketMessenger.write(messageBuffer, packet.messageId, packet.buffer._data);
+      let offset = PacketMessenger.write(messageBuffer, message.messageId, message.buffer._data);
       const buffer = arrayBufferToBuffer(messageBuffer.data.buffer);
       offset = offset === undefined ? 2 : offset;
 
-      client.getSocket().write(buffer.slice(0, packet.buffer._data.write_position + offset));
+      client.getSocket().write(buffer.slice(0, message.buffer._data.write_position + offset));
 
-      WebServer.emit('auth', {type: 'network', message: `Paquet envoyé <b>${packet.constructor.name}</b> (id: ${packet.messageId})`});
+      WebServer.emit('auth', {type: 'network', message: `Paquet envoyé <b>${message.constructor.name}</b> (id: ${message.messageId})`});
     } catch (e) {
       console.error(e);
       // @TODO: Catcher l'erreur et la logger.

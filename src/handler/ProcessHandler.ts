@@ -13,7 +13,7 @@ export default class ProcessHandler {
 
     if (handler) {
       const resolver = container.resolve(handler.controller);
-      resolver[handler.method]();
+      resolver[handler.method](packet);
     }
   }
 }
