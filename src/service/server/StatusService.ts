@@ -1,6 +1,7 @@
 import {injectable} from "inversify";
-import WebServer from "../../server/web";
-import Auth from "../../server/auth";
+import WebServer from "../../server/WebServer";
+import Auth from "../../server/Auth";
+import World from "../../server/World";
 
 @injectable()
 export default class StatusService {
@@ -9,7 +10,7 @@ export default class StatusService {
       api: WebServer.isApiOpen,
       socket: WebServer.isSocketOpen,
       auth: Auth.isAuthOpen,
-      world: false,
+      world: World.isWorldOpen,
     });
   }
 }

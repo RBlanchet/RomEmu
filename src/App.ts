@@ -1,15 +1,13 @@
 import "reflect-metadata";
 import {injectable} from "inversify";
 import {container} from "./inversify.config";
-import ConfigProvider from "./provider/config.provider";
-import DatabaseProvider from "./provider/database.provider";
-import AccountRepository from "./repository/account.repository";
-import {getCustomRepository} from "typeorm";
-import {Role} from "./enum/role";
+import ConfigProvider from "./provider/ConfigProvider";
+import DatabaseProvider from "./provider/DatabaseProvider";
 import Logger from "./cli/logger";
-import Auth from "./server/auth";
-import WebServer from "./server/web";
+import Auth from "./server/Auth";
+import WebServer from "./server/WebServer";
 import StatusService from "./service/server/StatusService";
+import World from "./server/World";
 
 @injectable()
 class App {
@@ -43,6 +41,7 @@ class App {
 
     // Temporaire, on peut définir une variable d'autostart dans notre .env pour être logique
     Auth.start();
+    World.start();
   }
 }
 

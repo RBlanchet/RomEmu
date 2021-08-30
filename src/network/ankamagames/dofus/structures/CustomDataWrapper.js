@@ -150,7 +150,7 @@ var BooleanByteWrapper = (function () {
   };
   return BooleanByteWrapper;
 })();
-var CustomDataWrapper = (function () {
+export var CustomDataWrapper = (function () {
   function CustomDataWrapper(data) {
     if (data instanceof ByteArray) {
       this._data = data;

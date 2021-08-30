@@ -1,94 +1,85 @@
-import IO from "../network/ankamagames/dofus/structures/CustomDataWrapper";
+import {CustomDataWrapper} from "../network/ankamagames/dofus/structures/CustomDataWrapper";
 import ByteArray from "../network/ankamagames/dofus/ByteArray";
 import arrayBufferToBuffer from "arraybuffer-to-buffer";
-import Client from "../model/Client";
-import WebServer from "../server/web";
-import * as Messages from "../network/ankamagames/dofus/Messages";
+import {ProtocolMessage} from "../network/ankamagames/dofus/Messages";
+import IClient from "../model/client/IClient";
 
 export default class PacketMessenger {
   private static BIT_RIGHT_SHIFT_LEN_PACKET_ID = 2;
 
-  public static send(message: Messages, client: Client) {
+  /**
+   * Envoie un message en l'encodant au client passé en paramètre.
+   *
+   * @static
+   */
+  public static send(message: ProtocolMessage, client: IClient): void
+  {
     try {
+      // @ts-ignore On sérialize le message en écrivant dans son buffer interne
       message.serialize();
-      const messageBuffer = new IO.CustomDataWrapper(new ByteArray());
-      let offset = PacketMessenger.write(messageBuffer, message.messageId, message.buffer._data);
-      const buffer = arrayBufferToBuffer(messageBuffer.data.buffer);
+
+      // Instanciation du CustomWrapper possèdant les informations du protocole puis nous écrivons les données dedans
+      const wrapper = new CustomDataWrapper();
+      let offset = PacketMessenger.write(wrapper, message.messageId, message.buffer._data);
+
+      // Transformation du buffer en ArrayBuffer
+      const buffer = arrayBufferToBuffer(wrapper.data.buffer);
+
+      // Dans le cas ou l'offset est undefined (la longueur du packet n'est pas reconnu), on estime sa longueur à 2
       offset = offset === undefined ? 2 : offset;
 
-      client.getSocket().write(buffer.slice(0, message.buffer._data.write_position + offset));
-
-      WebServer.emit('auth', {type: 'network', message: `Paquet envoyé <b>${message.constructor.name}</b> (id: ${message.messageId})`});
+      // Le client récupère son socket associé, puis envoie cette donnée à Dofus
+      client.socket.write(buffer.slice(0, message.buffer._data.write_position + offset));
     } catch (e) {
       console.error(e);
       // @TODO: Catcher l'erreur et la logger.
     }
   }
 
-  private static write(buffer, id, data) {
-    let _loc5_ = 0;
-    let _loc6_ = 0;
-    const _loc4_ = PacketMessenger.computeTypeLen(data.write_position);
-    buffer.writeShort(PacketMessenger.subComputeStaticHeader(id, _loc4_));
-    switch (_loc4_) {
+  /**
+   * S'occupe d'écrire dans le Wrapper les différents informations utiles au protocole Dofus.
+   *
+   * @static
+   * @private
+   */
+  // @ts-ignore
+  private static write(wrapper: CustomDataWrapper, id: number, data: ByteArray): number|undefined
+  {
+    // Nous allons determiner le type de Packet nous écrivons
+    let typeLen = 0;
+    switch (true) {
+      case data.write_position > 65535:
+        typeLen = 3;
+        break;
+      case data.write_position > 255:
+        typeLen = 2;
+        break;
+      case data.write_position > 0:
+        typeLen = 1;
+        break;
+    }
+    wrapper.writeShort(id << PacketMessenger.BIT_RIGHT_SHIFT_LEN_PACKET_ID | typeLen);
+
+    // Selon le type de Packet, l'inscription dans le buffer est différent
+    switch (typeLen) {
       case 0:
         return;
       case 1:
-        buffer.writeByte(data.write_position);
+        wrapper.writeByte(data.write_position);
         break;
       case 2:
-        buffer.writeShort(data.write_position);
+        wrapper.writeShort(data.write_position);
         break;
       case 3:
-        _loc5_ = data.write_position >> 16 & 255;
-        _loc6_ = data.write_position & 65535;
-        buffer.writeByte(_loc5_);
-        buffer.writeShort(_loc6_);
+        const byte = data.write_position >> 16 & 255;
+        const short = data.write_position & 65535;
+        wrapper.writeByte(byte);
+        wrapper.writeShort(short);
         break;
     }
-    const offset = buffer._data.write_position;
-    buffer.writeBytes(data);
+    const offset = wrapper._data.write_position;
+    wrapper.writeBytes(data);
 
     return offset;
-  }
-
-  private static computeTypeLen(position) {
-    if (position > 65535) {
-      return 3;
-    }
-    if (position > 255) {
-      return 2;
-    }
-    if (position > 0) {
-      return 1;
-    }
-
-    return 0;
-  }
-
-  private static subComputeStaticHeader(id, location) {
-    return id << PacketMessenger.BIT_RIGHT_SHIFT_LEN_PACKET_ID | location;
-  }
-
-  private static getPacketLength(buffer, length) {
-    let packetLen = 0;
-    switch (length) {
-      case 1:
-        packetLen = buffer.readByte();
-        break;
-
-      case 2:
-        packetLen = buffer.readByte();
-        break;
-
-      case 3:
-        packetLen = ((buffer.readByte() & 255) << 16) + ((buffer.readByte() & 255) << 8) + (buffer.readByte() & 255);
-        break;
-
-      default:
-        packetLen = 0;
-        break;
-    }
-    return packetLen;
   }
 }

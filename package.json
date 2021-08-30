@@ -5,7 +5,7 @@
   "description": "Emulateur open source pour Dofus 2.39",
   "main": "dist/app.js",
   "scripts": {
-    "watch": "./node_modules/.bin/concurrently \"./node_modules/.bin/tsc -w\" \"./node_modules/.bin/nodemon dist/app.js\"  \"yarn --cwd web/ dev\"",
+    "watch": "./node_modules/.bin/concurrently \"./node_modules/.bin/tsc -w\" \"./node_modules/.bin/nodemon dist/App.js\"  \"yarn --cwd web/ dev\"",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "./node_modules/.bin/tsc"
   },
@@ -39,6 +39,7 @@
     "chalk": "^4.1.0",
     "class-transformer": "^0.4.0",
     "class-validator": "^0.13.1",
+    "crypto": "^1.0.1",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "figlet": "^1.5.0",

@@ -1,7 +1,7 @@
 import {injectable} from "inversify";
 import * as figlet from "figlet";
 import chalk from "chalk";
-import ConfigProvider from "../provider/config.provider";
+import ConfigProvider from "../provider/ConfigProvider";
 
 @injectable()
 export default class Logger {
