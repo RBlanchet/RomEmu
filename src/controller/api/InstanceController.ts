@@ -1,7 +1,7 @@
 import {Get, Post, JsonController, Param} from "routing-controllers";
 import {injectable} from "inversify";
-import WebServer from "../../server/web";
-import Auth from "../../server/auth";
+import WebServer from "../../server/WebServer";
+import Auth from "../../server/Auth";
 
 @injectable()
 @JsonController("/instances")

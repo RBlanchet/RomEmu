@@ -1,5 +1,5 @@
 import {Connection, createConnection} from "typeorm";
-import ConfigProvider from "./config.provider";
+import ConfigProvider from "./ConfigProvider";
 import {injectable} from "inversify";
 import Logger from "../cli/logger";
 

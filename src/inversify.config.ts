@@ -1,13 +1,13 @@
 import {Container} from "inversify";
-import ConfigProvider from "./provider/config.provider";
-import DatabaseProvider from "./provider/database.provider";
+import ConfigProvider from "./provider/ConfigProvider";
+import DatabaseProvider from "./provider/DatabaseProvider";
 import Logger from "./cli/logger";
-import Auth from "./server/auth";
-import WebServer from "./server/web";
+import Auth from "./server/Auth";
+import WebServer from "./server/WebServer";
 import StatusService from "./service/server/StatusService";
 import InstanceController from "./controller/api/InstanceController";
 import AuthController from "./controller/AuthController";
-import AccountRepository from "./repository/account.repository";
+import AccountRepository from "./repository/AccountRepository";
 
 const container = new Container();
 

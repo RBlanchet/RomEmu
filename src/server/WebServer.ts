@@ -32,6 +32,8 @@ export default class WebServer {
           methods: ["GET", "POST"]
         }
       });
+
+      // @ts-ignore
       http.listen('8181', {host: '0.0.0.0'});
 
       WebServer.socket.on('connect', (socket: Socket) => {
@@ -50,6 +52,7 @@ export default class WebServer {
         controllers: [IndexController, InstanceController],
       });
 
+      // @ts-ignore
       WebServer.api.listen('8080', {host: '0.0.0.0'}, () => {
         WebServer.isApiOpen = true;
       });

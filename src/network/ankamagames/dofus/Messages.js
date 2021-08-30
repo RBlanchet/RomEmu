@@ -251,9 +251,9 @@ export class HelloGameMessage extends ProtocolMessage {
 
 export class AuthenticationTicketMessage extends ProtocolMessage {
 
-  static messageId = 101;
+  static messageId = 110;
   constructor() {
-    super(101);
+    super(110);
   }
   deserialize(buffer) {
     this.lang = buffer.readUTF();

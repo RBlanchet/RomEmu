@@ -1,10 +1,10 @@
 import {injectable} from "inversify";
 import Packet from "../model/Packet";
-import Client from "../model/Client";
+import IClient from "../model/client/IClient";
 
 @injectable()
 export default class PacketFactory {
-  public static create(buffer: Buffer, client: Client): Packet {
+  public static create(buffer: Buffer, client: IClient): Packet {
     return new Packet(this.convertToArrayBuffer(buffer), client);
   }
 
